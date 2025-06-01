@@ -33,11 +33,11 @@ const Index = () => {
           </div>
           
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent animate-pulse">
-            منصة الامتحانات الذكية
+            منصة الأستاذ نادي عبدالرحمن
           </h1>
           
           <p className="text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-            نظام متطور ومبتكر لإدارة الامتحانات وتقييم الطلاب بأحدث التقنيات
+            مدرس اللغة العربية - نظام متطور لإدارة الامتحانات والتقييم
           </p>
           
           <div className="flex justify-center space-x-reverse space-x-8 text-purple-200">
@@ -66,9 +66,9 @@ const Index = () => {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl">
                 <BookOpen className="w-10 h-10 text-white" />
               </div>
-              <CardTitle className="text-white text-2xl font-bold mb-4">دخول المعلم</CardTitle>
+              <CardTitle className="text-white text-2xl font-bold mb-4">دخول الأستاذ</CardTitle>
               <CardDescription className="text-blue-200 text-lg leading-relaxed">
-                إنشاء وإدارة الامتحانات بكل سهولة ومرونة
+                إدارة امتحانات اللغة العربية بكل سهولة ومرونة
               </CardDescription>
               
               <div className="flex justify-center space-x-reverse space-x-4 mt-4 text-sm text-green-200">
@@ -84,7 +84,7 @@ const Index = () => {
             </CardHeader>
             <CardContent className="relative z-10">
               <Button className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
-                دخول كمعلم
+                دخول الأستاذ
               </Button>
             </CardContent>
           </Card>
@@ -100,7 +100,7 @@ const Index = () => {
               </div>
               <CardTitle className="text-white text-2xl font-bold mb-4">دخول الطالب</CardTitle>
               <CardDescription className="text-blue-200 text-lg leading-relaxed">
-                حل الامتحانات والاختبارات بشكل تفاعلي
+                حل امتحانات اللغة العربية بشكل تفاعلي
               </CardDescription>
               
               <div className="flex justify-center space-x-reverse space-x-4 mt-4 text-sm text-purple-200">
@@ -124,7 +124,7 @@ const Index = () => {
         
         <div className="mt-12 text-center animate-fade-in delay-500">
           <p className="text-white/70 text-sm">
-            تم تطوير المنصة بأحدث التقنيات لضمان أفضل تجربة تعليمية
+            منصة الأستاذ نادي عبدالرحمن لتعليم اللغة العربية بأحدث التقنيات
           </p>
         </div>
       </div>
@@ -160,9 +160,9 @@ const TeacherAuth = () => {
           <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl animate-bounce">
             <BookOpen className="w-8 h-8 text-white" />
           </div>
-          <CardTitle className="text-3xl text-white font-bold">تسجيل دخول المعلم</CardTitle>
+          <CardTitle className="text-3xl text-white font-bold">الأستاذ نادي عبدالرحمن</CardTitle>
           <CardDescription className="text-blue-200 text-lg">
-            ادخل بياناتك للوصول إلى لوحة التحكم
+            مدرس اللغة العربية - تسجيل دخول لوحة التحكم
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -174,7 +174,7 @@ const TeacherAuth = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 hover:bg-white/25"
-              placeholder="nadi@gmail.com"
+              placeholder="example@gmail.com"
             />
           </div>
           <div className="space-y-2">
@@ -185,7 +185,7 @@ const TeacherAuth = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 hover:bg-white/25"
-              placeholder="123"
+              placeholder="password"
             />
           </div>
           <Button onClick={handleLogin} className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 h-12 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
