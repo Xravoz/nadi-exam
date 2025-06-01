@@ -124,7 +124,7 @@ const Index = () => {
         
         <div className="mt-12 text-center animate-fade-in delay-500">
           <p className="text-white/70 text-sm">
-            منصة الأستاذ نادي عبدالرحمن لتعليم اللغة العربية بأحدث التقنيات
+            تم تطويرها بواسطه محمد خاطر
           </p>
         </div>
       </div>
