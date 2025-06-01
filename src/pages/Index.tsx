@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, User } from "lucide-react";
+import { BookOpen, User, GraduationCap, Users, Clock, CheckCircle, Trophy, Star } from "lucide-react";
 
 const Index = () => {
   const [userType, setUserType] = useState<'teacher' | 'student' | null>(null);
@@ -18,54 +17,115 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center p-4" dir="rtl">
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="relative z-10 text-center">
-        <div className="mb-8">
-          <h1 className="text-5xl font-bold text-white mb-4 animate-pulse">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 relative overflow-hidden" dir="rtl">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+
+      <div className="relative z-10 text-center max-w-4xl mx-auto">
+        <div className="mb-12 space-y-6">
+          <div className="flex justify-center mb-6">
+            <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-2xl animate-bounce">
+              <GraduationCap className="w-16 h-16 text-white" />
+            </div>
+          </div>
+          
+          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent animate-pulse">
             منصة الامتحانات الذكية
           </h1>
-          <p className="text-xl text-blue-200">
-            نظام متطور لإدارة الامتحانات وتقييم الطلاب
+          
+          <p className="text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            نظام متطور ومبتكر لإدارة الامتحانات وتقييم الطلاب بأحدث التقنيات
           </p>
+          
+          <div className="flex justify-center space-x-reverse space-x-8 text-purple-200">
+            <div className="flex items-center space-x-reverse space-x-2">
+              <Clock className="w-5 h-5" />
+              <span>سريع وفعال</span>
+            </div>
+            <div className="flex items-center space-x-reverse space-x-2">
+              <CheckCircle className="w-5 h-5" />
+              <span>دقيق ومؤمن</span>
+            </div>
+            <div className="flex items-center space-x-reverse space-x-2">
+              <Star className="w-5 h-5" />
+              <span>سهل الاستخدام</span>
+            </div>
+          </div>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105 cursor-pointer"
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <Card className="bg-white/5 backdrop-blur-xl border border-white/20 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group relative overflow-hidden"
                 onClick={() => setUserType('teacher')}>
-            <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="w-8 h-8 text-white" />
+            {/* Card glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <CardHeader className="text-center relative z-10 pb-8">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl">
+                <BookOpen className="w-10 h-10 text-white" />
               </div>
-              <CardTitle className="text-white text-xl">دخول المعلم</CardTitle>
-              <CardDescription className="text-blue-200">
-                إنشاء وإدارة الامتحانات
+              <CardTitle className="text-white text-2xl font-bold mb-4">دخول المعلم</CardTitle>
+              <CardDescription className="text-blue-200 text-lg leading-relaxed">
+                إنشاء وإدارة الامتحانات بكل سهولة ومرونة
               </CardDescription>
+              
+              <div className="flex justify-center space-x-reverse space-x-4 mt-4 text-sm text-green-200">
+                <div className="flex items-center space-x-reverse space-x-1">
+                  <Users className="w-4 h-4" />
+                  <span>إدارة الطلاب</span>
+                </div>
+                <div className="flex items-center space-x-reverse space-x-1">
+                  <Trophy className="w-4 h-4" />
+                  <span>تتبع النتائج</span>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <Button className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-semibold py-3">
+            <CardContent className="relative z-10">
+              <Button className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
                 دخول كمعلم
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105 cursor-pointer"
+          <Card className="bg-white/5 backdrop-blur-xl border border-white/20 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer group relative overflow-hidden"
                 onClick={() => setUserType('student')}>
-            <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
-                <User className="w-8 h-8 text-white" />
+            {/* Card glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <CardHeader className="text-center relative z-10 pb-8">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:-rotate-12 transition-transform duration-500 shadow-xl">
+                <User className="w-10 h-10 text-white" />
               </div>
-              <CardTitle className="text-white text-xl">دخول الطالب</CardTitle>
-              <CardDescription className="text-blue-200">
-                حل الامتحانات والاختبارات
+              <CardTitle className="text-white text-2xl font-bold mb-4">دخول الطالب</CardTitle>
+              <CardDescription className="text-blue-200 text-lg leading-relaxed">
+                حل الامتحانات والاختبارات بشكل تفاعلي
               </CardDescription>
+              
+              <div className="flex justify-center space-x-reverse space-x-4 mt-4 text-sm text-purple-200">
+                <div className="flex items-center space-x-reverse space-x-1">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>نتائج فورية</span>
+                </div>
+                <div className="flex items-center space-x-reverse space-x-1">
+                  <Clock className="w-4 h-4" />
+                  <span>وقت محدود</span>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3">
+            <CardContent className="relative z-10">
+              <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
                 دخول كطالب
               </Button>
             </CardContent>
           </Card>
+        </div>
+        
+        <div className="mt-12 text-center">
+          <p className="text-white/70 text-sm">
+            تم تطوير المنصة بأحدث التقنيات لضمان أفضل تجربة تعليمية
+          </p>
         </div>
       </div>
     </div>
@@ -90,44 +150,51 @@ const TeacherAuth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center p-4" dir="rtl">
-      <Card className="w-full max-w-md bg-white/10 backdrop-blur-lg border-white/20">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl text-white">تسجيل دخول المعلم</CardTitle>
-          <CardDescription className="text-blue-200">
+    <div className="min-h-screen bg-gradient-to-br from-green-900 via-blue-900 to-purple-900 flex items-center justify-center p-4 relative overflow-hidden" dir="rtl">
+      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="absolute top-20 right-20 w-64 h-64 bg-green-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 left-20 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+      <Card className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl relative z-10">
+        <CardHeader className="text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl">
+            <BookOpen className="w-8 h-8 text-white" />
+          </div>
+          <CardTitle className="text-3xl text-white font-bold">تسجيل دخول المعلم</CardTitle>
+          <CardDescription className="text-blue-200 text-lg">
             ادخل بياناتك للوصول إلى لوحة التحكم
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="email" className="text-white">البريد الإلكتروني</Label>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-white font-medium">البريد الإلكتروني</Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               placeholder="nadi@gmail.com"
             />
           </div>
-          <div>
-            <Label htmlFor="password" className="text-white">كلمة المرور</Label>
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-white font-medium">كلمة المرور</Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               placeholder="123"
             />
           </div>
-          <Button onClick={handleLogin} className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700">
+          <Button onClick={handleLogin} className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 h-12 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300">
             دخول
           </Button>
           <Button 
             variant="outline" 
             onClick={() => window.location.reload()} 
-            className="w-full border-white/30 text-white hover:bg-white/10"
+            className="w-full border-white/30 text-white hover:bg-white/10 h-12 rounded-xl font-medium"
           >
             العودة للصفحة الرئيسية
           </Button>
@@ -158,42 +225,49 @@ const StudentLogin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-indigo-900 flex items-center justify-center p-4" dir="rtl">
-      <Card className="w-full max-w-md bg-white/10 backdrop-blur-lg border-white/20">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl text-white">دخول الطالب</CardTitle>
-          <CardDescription className="text-purple-200">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-indigo-900 flex items-center justify-center p-4 relative overflow-hidden" dir="rtl">
+      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="absolute top-20 left-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+      <Card className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl relative z-10">
+        <CardHeader className="text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl">
+            <User className="w-8 h-8 text-white" />
+          </div>
+          <CardTitle className="text-3xl text-white font-bold">دخول الطالب</CardTitle>
+          <CardDescription className="text-purple-200 text-lg">
             ادخل اسمك وكود الامتحان للبدء
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="studentName" className="text-white">اسم الطالب</Label>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="studentName" className="text-white font-medium">اسم الطالب</Label>
             <Input
               id="studentName"
               value={studentName}
               onChange={(e) => setStudentName(e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-transparent"
               placeholder="ادخل اسمك"
             />
           </div>
-          <div>
-            <Label htmlFor="examCode" className="text-white">كود الامتحان</Label>
+          <div className="space-y-2">
+            <Label htmlFor="examCode" className="text-white font-medium">كود الامتحان</Label>
             <Input
               id="examCode"
               value={examCode}
               onChange={(e) => setExamCode(e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-transparent"
               placeholder="ادخل كود الامتحان"
             />
           </div>
-          <Button onClick={handleJoinExam} className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
+          <Button onClick={handleJoinExam} className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 h-12 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300">
             دخول الامتحان
           </Button>
           <Button 
             variant="outline" 
             onClick={() => window.location.reload()} 
-            className="w-full border-white/30 text-white hover:bg-white/10"
+            className="w-full border-white/30 text-white hover:bg-white/10 h-12 rounded-xl font-medium"
           >
             العودة للصفحة الرئيسية
           </Button>
