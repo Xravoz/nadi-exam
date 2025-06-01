@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookOpen, User, GraduationCap, Users, Clock, CheckCircle, Trophy, Star, ArrowRight, ArrowLeft, Plus, Eye, LogOut } from "lucide-react";
+import { BookOpen, User, GraduationCap, Users, Clock, CheckCircle, Trophy, Star, ArrowRight, ArrowLeft, Plus, Eye, LogOut, Calendar, Timer } from "lucide-react";
 
 const Index = () => {
   const [userType, setUserType] = useState<'teacher' | 'student' | null>(null);
@@ -215,6 +214,21 @@ const StudentLogin = () => {
     const exam = exams.find((e: any) => e.code === examCode);
     
     if (exam && studentName.trim()) {
+      // Check if exam is available now
+      const now = new Date();
+      const startTime = new Date(exam.startTime);
+      const endTime = new Date(exam.endTime);
+      
+      if (now < startTime) {
+        alert(`الامتحان لم يبدأ بعد. سيبدأ في: ${startTime.toLocaleString('ar-EG')}`);
+        return;
+      }
+      
+      if (now > endTime) {
+        alert('انتهت مدة الامتحان');
+        return;
+      }
+      
       setCurrentExam({...exam, studentName});
     } else {
       alert('كود الامتحان غير صحيح أو اسم الطالب فارغ');
@@ -281,6 +295,11 @@ const StudentLogin = () => {
 const TeacherDashboard = () => {
   const [activeTab, setActiveTab] = useState<'create' | 'view'>('create');
   const [examTitle, setExamTitle] = useState('');
+  const [examDuration, setExamDuration] = useState(60); // minutes
+  const [startDate, setStartDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [questions, setQuestions] = useState([{
     question: '',
     options: ['', '', '', ''],
@@ -309,8 +328,16 @@ const TeacherDashboard = () => {
   };
 
   const createExam = () => {
-    if (!examTitle.trim() || questions.some(q => !q.question.trim())) {
+    if (!examTitle.trim() || questions.some(q => !q.question.trim()) || !startDate || !startTime || !endDate || !endTime) {
       alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${endDate}T${endTime}`);
+
+    if (startDateTime >= endDateTime) {
+      alert('وقت البداية يجب أن يكون قبل وقت النهاية');
       return;
     }
 
@@ -319,6 +346,9 @@ const TeacherDashboard = () => {
       id: Date.now(),
       title: examTitle,
       code: examCode,
+      duration: examDuration,
+      startTime: startDateTime.toISOString(),
+      endTime: endDateTime.toISOString(),
       questions,
       results: []
     };
@@ -327,8 +357,15 @@ const TeacherDashboard = () => {
     exams.push(exam);
     localStorage.setItem('exams', JSON.stringify(exams));
 
-    alert(`تم إنشاء الامتحان بنجاح!\nكود الامتحان: ${examCode}`);
+    alert(`تم إنشاء الامتحان بنجاح!\nكود الامتحان: ${examCode}\nيبدأ في: ${startDateTime.toLocaleString('ar-EG')}\nينتهي في: ${endDateTime.toLocaleString('ar-EG')}`);
+    
+    // Reset form
     setExamTitle('');
+    setExamDuration(60);
+    setStartDate('');
+    setStartTime('');
+    setEndDate('');
+    setEndTime('');
     setQuestions([{
       question: '',
       options: ['', '', '', ''],
@@ -386,7 +423,7 @@ const TeacherDashboard = () => {
                 إنشاء امتحان جديد
               </CardTitle>
               <CardDescription className="text-green-200">
-                أنشئ امتحان تفاعلي مع أسئلة متعددة الخيارات
+                أنشئ امتحان تفاعلي مع أسئلة متعددة الخيارات وحدد أوقات الإتاحة
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-8 p-8">
@@ -400,6 +437,87 @@ const TeacherDashboard = () => {
                   placeholder="مثال: امتحان الرياضيات - الفصل الأول"
                 />
               </div>
+
+              {/* Exam timing settings */}
+              <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-purple-500/20 to-pink-500/20">
+                  <CardTitle className="text-white flex items-center gap-3">
+                    <Clock className="w-6 h-6" />
+                    إعدادات التوقيت والمدة
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6 p-6">
+                  <div className="space-y-3">
+                    <Label className="text-white font-medium flex items-center gap-2">
+                      <Timer className="w-4 h-4" />
+                      مدة الامتحان (بالدقائق)
+                    </Label>
+                    <Input
+                      type="number"
+                      value={examDuration}
+                      onChange={(e) => setExamDuration(parseInt(e.target.value) || 60)}
+                      min="1"
+                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 h-12 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-300"
+                      placeholder="60"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <Label className="text-white font-medium flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        تاريخ ووقت البداية
+                      </Label>
+                      <div className="space-y-3">
+                        <Input
+                          type="date"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          className="bg-white/20 border-white/30 text-white h-12 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                        />
+                        <Input
+                          type="time"
+                          value={startTime}
+                          onChange={(e) => setStartTime(e.target.value)}
+                          className="bg-white/20 border-white/30 text-white h-12 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label className="text-white font-medium flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        تاريخ ووقت النهاية
+                      </Label>
+                      <div className="space-y-3">
+                        <Input
+                          type="date"
+                          value={endDate}
+                          onChange={(e) => setEndDate(e.target.value)}
+                          className="bg-white/20 border-white/30 text-white h-12 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent transition-all duration-300"
+                        />
+                        <Input
+                          type="time"
+                          value={endTime}
+                          onChange={(e) => setEndTime(e.target.value)}
+                          className="bg-white/20 border-white/30 text-white h-12 rounded-xl focus:ring-2 focus:ring-red-400 focus:border-transparent transition-all duration-300"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {startDate && startTime && endDate && endTime && (
+                    <div className="bg-blue-500/20 p-4 rounded-xl">
+                      <p className="text-blue-200 text-sm">
+                        <strong>ملخص الامتحان:</strong><br />
+                        يبدأ: {new Date(`${startDate}T${startTime}`).toLocaleString('ar-EG')}<br />
+                        ينتهي: {new Date(`${endDate}T${endTime}`).toLocaleString('ar-EG')}<br />
+                        المدة: {examDuration} دقيقة
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
               <div className="space-y-6">
                 {questions.map((q, qIndex) => (
@@ -462,63 +580,90 @@ const TeacherDashboard = () => {
 
         {activeTab === 'view' && (
           <div className="space-y-6">
-            {exams.map((exam: any, index: number) => (
-              <Card key={exam.id} className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl rounded-2xl overflow-hidden animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
-                <CardHeader className="bg-gradient-to-r from-blue-500/20 to-purple-500/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-white text-xl flex items-center gap-3">
-                        <BookOpen className="w-6 h-6" />
-                        {exam.title}
-                      </CardTitle>
-                      <CardDescription className="text-blue-200 mt-2">
-                        كود الامتحان: <span className="font-bold text-green-300">{exam.code}</span> | 
-                        عدد الأسئلة: <span className="font-bold text-purple-300">{exam.questions.length}</span> |
-                        عدد المشاركين: <span className="font-bold text-pink-300">{exam.results.length}</span>
-                      </CardDescription>
-                    </div>
-                    <div className="text-center p-4 bg-white/10 rounded-2xl">
-                      <div className="text-2xl font-bold text-green-400">{exam.results.length}</div>
-                      <div className="text-xs text-blue-200">طالب</div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-yellow-400" />
-                    نتائج الطلاب:
-                  </h3>
-                  {exam.results.length === 0 ? (
-                    <div className="text-center py-8 bg-white/5 rounded-xl">
-                      <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                      <p className="text-gray-300">لم يقم أي طالب بحل الامتحان بعد</p>
-                    </div>
-                  ) : (
-                    <div className="grid gap-3">
-                      {exam.results.map((result: any, index: number) => (
-                        <div key={index} className="bg-white/10 p-4 rounded-xl flex justify-between items-center hover:bg-white/15 transition-all duration-300 animate-slide-in-right" style={{animationDelay: `${index * 50}ms`}}>
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
-                              <User className="w-5 h-5 text-white" />
-                            </div>
-                            <span className="text-white font-medium">{result.studentName}</span>
+            {exams.map((exam: any, index: number) => {
+              const now = new Date();
+              const startTime = new Date(exam.startTime);
+              const endTime = new Date(exam.endTime);
+              const isActive = now >= startTime && now <= endTime;
+              const isUpcoming = now < startTime;
+              const isExpired = now > endTime;
+
+              return (
+                <Card key={exam.id} className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl rounded-2xl overflow-hidden animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
+                  <CardHeader className="bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-white text-xl flex items-center gap-3">
+                          <BookOpen className="w-6 h-6" />
+                          {exam.title}
+                          <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                            isActive ? 'bg-green-500 text-white' : 
+                            isUpcoming ? 'bg-yellow-500 text-black' : 
+                            'bg-red-500 text-white'
+                          }`}>
+                            {isActive ? 'نشط الآن' : isUpcoming ? 'قريباً' : 'منتهي'}
                           </div>
-                          <div className="flex items-center gap-3">
-                            <div className="text-center">
-                              <div className="text-lg font-bold text-green-300">{result.score}/{exam.questions.length}</div>
-                              <div className="text-xs text-blue-200">
-                                {Math.round((result.score / exam.questions.length) * 100)}%
-                              </div>
-                            </div>
-                            <div className={`w-3 h-3 rounded-full ${result.score >= exam.questions.length / 2 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        </CardTitle>
+                        <CardDescription className="text-blue-200 mt-2">
+                          كود الامتحان: <span className="font-bold text-green-300">{exam.code}</span> | 
+                          عدد الأسئلة: <span className="font-bold text-purple-300">{exam.questions.length}</span> |
+                          المدة: <span className="font-bold text-blue-300">{exam.duration} دقيقة</span> |
+                          عدد المشاركين: <span className="font-bold text-pink-300">{exam.results.length}</span>
+                        </CardDescription>
+                        <div className="mt-3 text-sm text-white/80">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Calendar className="w-4 h-4" />
+                            يبدأ: {startTime.toLocaleString('ar-EG')}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            ينتهي: {endTime.toLocaleString('ar-EG')}
                           </div>
                         </div>
-                      ))}
+                      </div>
+                      <div className="text-center p-4 bg-white/10 rounded-2xl">
+                        <div className="text-2xl font-bold text-green-400">{exam.results.length}</div>
+                        <div className="text-xs text-blue-200">طالب</div>
+                      </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-400" />
+                      نتائج الطلاب:
+                    </h3>
+                    {exam.results.length === 0 ? (
+                      <div className="text-center py-8 bg-white/5 rounded-xl">
+                        <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-gray-300">لم يقم أي طالب بحل الامتحان بعد</p>
+                      </div>
+                    ) : (
+                      <div className="grid gap-3">
+                        {exam.results.map((result: any, index: number) => (
+                          <div key={index} className="bg-white/10 p-4 rounded-xl flex justify-between items-center hover:bg-white/15 transition-all duration-300 animate-slide-in-right" style={{animationDelay: `${index * 50}ms`}}>
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                                <User className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-white font-medium">{result.studentName}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-center">
+                                <div className="text-lg font-bold text-green-300">{result.score}/{exam.questions.length}</div>
+                                <div className="text-xs text-blue-200">
+                                  {Math.round((result.score / exam.questions.length) * 100)}%
+                                </div>
+                              </div>
+                              <div className={`w-3 h-3 rounded-full ${result.score >= exam.questions.length / 2 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
             {exams.length === 0 && (
               <Card className="bg-white/10 backdrop-blur-lg border-white/20 shadow-2xl rounded-2xl animate-scale-in">
                 <CardContent className="text-center py-16">
@@ -549,7 +694,7 @@ const ExamInterface = ({ exam }: { exam: any }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(exam.questions.length * 60); // 1 minute per question
+  const [timeLeft, setTimeLeft] = useState(exam.duration * 60); // Convert minutes to seconds
 
   React.useEffect(() => {
     if (timeLeft > 0 && !showResults) {
